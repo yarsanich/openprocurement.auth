@@ -30,8 +30,8 @@ setup(name='openprocurement.auth',
           'Flask-OAuthlib'
       ],
       entry_points={
-          # 'paste.app_factory': [
-          #     'make_oath_provider_app = openprocurement.auth.provider:make_oath_provider_app'
-          # ]
+          'paste.app_factory': [
+              'oauth_provider = openprocurement.auth.provider:make_oath_provider_app'
+          ]
       },
       )
