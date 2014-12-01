@@ -11,7 +11,7 @@ setup(name='openprocurement.auth',
       # Get more strings from
       # http://pypi.python.org/pypi?:action=list_classifiers
       classifiers=[
-        "Programming Language :: Python",
+          "Programming Language :: Python",
       ],
       keywords='',
       author='',
@@ -24,10 +24,14 @@ setup(name='openprocurement.auth',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'Flask',
+          'Flask-SQLAlchemy',
+          'werkzeug',
+          'Flask-OAuthlib'
       ],
       entry_points={
           # 'paste.app_factory': [
-          #     'auth_server = openprocurement.auth.provider:make_provider'
+          #     'make_oath_provider_app = openprocurement.auth.provider:make_oath_provider_app'
           # ]
       },
       )
