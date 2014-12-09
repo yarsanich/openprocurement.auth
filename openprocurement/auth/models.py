@@ -1,11 +1,13 @@
 from datetime import datetime, timedelta
 from .provider_app import db, oauth
-from flask import request
+from flask import request, abort
+from flask import current_app
+from hashlib import sha1
 
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(40), unique=True)
+    bidder_id = db.Column(db.String(40), unique=True)
 
 
 class Client(db.Model):
@@ -101,13 +103,22 @@ class Token(db.Model):
 
 
 def current_user():
-    if 'bidder_id' in request.args:
-        uid = request.args['bidder_id']
-        return User.query.get(uid)
+    if 'bidder_id' in request.args and 'hash' in request.args:
+        digest = sha1(current_app.hash_secret_key)
+        digest.update(request.args['bidder_id'])
+        if digest.hexdigest() == request.args['hash']:
+            bidder_id = request.args['bidder_id']
+            user = User.query.filter_by(bidder_id=bidder_id).first()
+            if not user:
+                user = User(bidder_id=bidder_id)
+                db.session.add(user)
+                db.session.commit()
+            return user
     elif 'bidder_id' in request.form:
-        uid = request.form['bidder_id']
-        return User.query.get(uid)
-    return None
+        user = User.query.filter_by(bidder_id=request.form['bidder_id']).first()
+        if user:
+            return user
+    return abort(405)
 
 
 @oauth.clientgetter
