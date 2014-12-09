@@ -3,21 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <title>Authorization</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 </head>
 <body>
-  <p>Client: {{ client.client_id }}</p>
-  <p>User: {{ user.username }}</p>
-  <form action="/oauth/authorize" method="post">
-    <p>Allow access?</p>
-    <input type="hidden" name="client_id" value="{{ client.client_id }}">
-    <input type="hidden" name="scope" value="{{ scopes|join(' ') }}">
-    <input type="hidden" name="bidder_id" value="{{ user.id }}">
-    <input type="hidden" name="response_type" value="{{ response_type }}">
-    {% if state %}
-    <input type="hidden" name="state" value="{{ state }}">
-    {% endif %}
-    <input type="submit" name="confirm" value="yes">
-    <input type="submit" name="confirm" value="no">
-  </form>
+  <div class="container">
+    <div class="row">
+      <div class="page-header">
+        <h1 class="text-center"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Підтвердження участі</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="panel panel-warning">
+      <div class="panel-heading">
+        <p>Система пороведення аукціонів просить доступу для використання вашого унікального ключа</p>
+        <p>Ваш UID: {{ user.bidder_id }}</p>
+      </div>
+      <div class="panel-body">
+        <form action="/oauth/authorize" method="post">
+          <p>Дозволити доступ?</p>
+          <input type="hidden" name="client_id" value="{{ client.client_id }}">
+          <input type="hidden" name="scope" value="{{ scopes|join(' ') }}">
+          <input type="hidden" name="bidder_id" value="{{ user.bidder_id }}">
+          <input type="hidden" name="response_type" value="{{ response_type }}">
+          <input type="hidden" name="redirect_uri" value="{{ redirect_uri }}">
+          {% if state %}
+          <input type="hidden" name="state" value="{{ state }}">
+          {% endif %}
+          <button type="submit" name="confirm" value="yes" class="btn btn-success">Так</button>
+          <button type="submit" name="confirm" value="no" class="btn btn-danger">Ні</button>
+
+        </form>
+      </div>
+    </div>
+      
+    </div>
+  </div>
 </body>
 </html>
