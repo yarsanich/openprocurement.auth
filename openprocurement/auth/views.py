@@ -7,10 +7,10 @@ from werkzeug.security import gen_salt
 @oauth_provider.route('/', methods=('GET', 'POST'))
 def home():
     if request.method == 'POST':
-        username = request.form.get('bidder_id')
-        user = User.query.filter_by(username=username).first()
+        bidder_id = request.form.get('bidder_id')
+        user = User.query.filter_by(bidder_id=bidder_id).first()
         if not user:
-            user = User(username=username)
+            user = User(bidder_id=bidder_id)
             db.session.add(user)
             db.session.commit()
         session['bidder_id'] = user.id
@@ -61,14 +61,15 @@ def authorize(*args, **kwargs):
         client = Client.query.filter_by(client_id=client_id).first()
         kwargs['client'] = client
         kwargs['user'] = user
+        kwargs['redirect_uri'] = request.args['redirect_uri']
         return render_template('authorize.html', **kwargs)
 
     confirm = request.form.get('confirm', 'no')
     return confirm == 'yes'
 
 
-@oauth_provider.route('/api/allow_bid')
+@oauth_provider.route('/api/me')
 @oauth.require_oauth()
 def allow_bid():
     user = request.oauth.user
-    return jsonify(username=user.username)
+    return jsonify(bidder_id=user.bidder_id)
