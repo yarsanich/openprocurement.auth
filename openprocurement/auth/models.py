@@ -158,13 +158,13 @@ def load_token(access_token=None, refresh_token=None):
 
 @oauth.tokensetter
 def save_token(token, request, *args, **kwargs):
-    toks = Token.query.filter_by(
-        client_id=request.client.client_id,
-        user_id=request.user.id
-    )
-    # make sure that every client has only one token connected to a user
-    for t in toks:
-        db.session.delete(t)
+    # toks = Token.query.filter_by(
+    #     client_id=request.client.client_id,
+    #     user_id=request.user.id
+    # )
+    # # make sure that every client has only one token connected to a user
+    # for t in toks:
+    #     db.session.delete(t)
 
     expires_in = token.pop('expires_in')
     expires = datetime.utcnow() + timedelta(seconds=expires_in)
