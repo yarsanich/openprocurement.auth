@@ -9,18 +9,16 @@
   <div class="container">
     <div class="row">
       <div class="page-header">
-        <h1 class="text-center"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Підтвердження участі</h1>
+        <h1 class="text-center"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Чи погоджуєтесь Ви з умовами проведення аукціону?</h1>
       </div>
     </div>
     <div class="row">
       <div class="panel panel-warning">
-      <div class="panel-heading">
-        <p>Система пороведення аукціонів просить доступу для використання вашого унікального ключа</p>
-        <p>Ваш UID: {{ user.bidder_id }}</p>
-      </div>
       <div class="panel-body">
         <form action="/oauth/authorize" method="post">
-          <p>Дозволити доступ?</p>
+          Буде представлено умови проведення..
+          <p>Phasellus et vehicula tortor. Donec et egestas dui. Suspendisse tellus leo, commodo auctor condimentum pulvinar, posuere id lorem. Praesent sit amet egestas mi. Aenean et tincidunt libero. Nulla ex elit, maximus vel nibh a, blandit ullamcorper risus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Fusce non arcu congue, efficitur arcu ac, auctor lectus. Vestibulum commodo vehicula porttitor. In ultrices scelerisque ligula, nec egestas arcu sodales ac. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam et quam enim. Vestibulum felis magna, scelerisque non nisl sed, dictum sodales felis. Vestibulum bibendum ligula at neque pharetra hendrerit. In aliquet sit amet ipsum nec mattis. Fusce fermentum ex at cursus efficitur.</p>
+          <p>Praesent elit odio, aliquet nec ullamcorper sed, pellentesque ut lacus. Donec convallis sagittis cursus. Morbi in pharetra est. Maecenas aliquam erat eget porta laoreet. Nullam nisi dolor, pulvinar vitae nibh eget, blandit elementum ante. Morbi eleifend iaculis finibus. Donec efficitur tortor a augue luctus, at pretium lectus bibendum. Integer lobortis, nisi at auctor pulvinar, ante est convallis nunc, ut vehicula magna massa nec diam. Sed turpis tellus, varius sed laoreet ut, efficitur vel metus. Nam at sagittis augue. Cras ultrices, nunc vulputate laoreet tempus, lacus lorem cursus nisl, in dignissim metus justo bibendum purus. Fusce in turpis quis augue ultrices mattis. Morbi fermentum arcu id pharetra pellentesque. Vivamus ut euismod metus, placerat eleifend enim. Suspendisse potenti. Pellentesque dignissim sagittis semper.</p>
           <input type="hidden" name="client_id" value="{{ client.client_id }}">
           <input type="hidden" name="scope" value="{{ scopes|join(' ') }}">
           <input type="hidden" name="bidder_id" value="{{ user.bidder_id }}">
