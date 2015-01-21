@@ -26,7 +26,7 @@ def make_oath_provider_app(
             client_secret=auction_client_secret,
             _redirect_uris=' '.join([
                 'http://localhost:',
-                'http://sapient.office.quintagroup.com',
+                'http://cygnet.office.quintagroup.com',
                 'http://auction-sandbox.openprocurement.org',
             ]),
             _default_scopes='email',
