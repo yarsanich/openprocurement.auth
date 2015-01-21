@@ -4,8 +4,26 @@
   <meta charset="UTF-8">
   <title>Authorization</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <style type="text/css">
+    .fixed {
+      padding-bottom: 35px;
+    }
+
+    .fixed  .btns-confirm {
+      position: fixed;
+      bottom: 0px;
+      left: 0;
+     }
+     .btns-confirm {
+      padding: 12px 0;
+      background-color: rgb(255, 255, 255);
+      width: 100%;
+      text-align: center;
+    }
+  </style>
+
 </head>
-<body>
+<body class="">
   <div class="container">
     <div class="row">
       <div class="page-header">
@@ -27,14 +45,21 @@
           {% if state %}
           <input type="hidden" name="state" value="{{ state }}">
           {% endif %}
-          <button type="submit" name="confirm" value="yes" class="btn btn-success">Так</button>
-          <button type="submit" name="confirm" value="no" class="btn btn-danger">Ні</button>
-
+          <div class="btns-confirm">
+            <button type="submit" name="confirm" value="yes" class="btn btn-success">Так</button>
+            <button type="submit" name="confirm" value="no" class="btn btn-danger">Ні</button>
+          </div>
         </form>
       </div>
     </div>
       
     </div>
   </div>
+  <script type="text/javascript">
+    var body = document.getElementsByTagName('body')[0];
+    if ((body.getBoundingClientRect().height + 20) > window.outerHeight) {
+      body.setAttribute('class', 'fixed');
+    }
+  </script>
 </body>
 </html>
