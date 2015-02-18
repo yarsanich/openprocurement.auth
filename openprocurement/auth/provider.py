@@ -24,7 +24,7 @@ def make_oath_provider_app(
             {'client_id': auction_client_id,
              'client_secret': auction_client_secret,
              '_redirect_uris':' '.join([
-                'http:\/\/[\w\-_]+\.localhost:.*',
+                'http:\/\/localhost:.*',
                 '(http|https):\/\/[\w\-_]+\.office\.quintagroup\.com.*',
                 '(http|https):\/\/[\w\-_]+\.openprocurement\.org\.*',
             ]),
