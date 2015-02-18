@@ -6,13 +6,13 @@ from hashlib import sha1
 from uuid import uuid4
 import re
 
-GRANT_EXPIRES = 3600
+GRANT_EXPIRES = 86400
 
 
 class MetaModel(object):
     format_key_string = "{0['id']}"
 
-    def __init__(self, **entries): 
+    def __init__(self, **entries):
         self.__dict__.update(entries)
 
     @classmethod
@@ -30,7 +30,6 @@ class MetaModel(object):
             client = cls(**document)
             client.__dict__.update(kw)
             return client
-
 
     @classmethod
     def save_to_db(cls, model):
@@ -52,7 +51,7 @@ class Client(MetaModel):
         if self._redirect_uris:
             return self._redirect_uris.split()
         return []
-    
+
     @property
     def default_redirect_uri(self):
         return self.redirect_uris[0]
@@ -65,7 +64,6 @@ class Client(MetaModel):
         if self._default_scopes:
             return self._default_scopes.split()
         return []
-        
 
 
 class Grant(MetaModel):
@@ -79,12 +77,10 @@ class Grant(MetaModel):
 
     @property
     def expires(self):
-        return datetime.strptime(self._expires, "%Y-%m-%dT%H:%M:%S.%f" )
+        return datetime.strptime(self._expires, "%Y-%m-%dT%H:%M:%S.%f")
 
     def delete(self):
         return oauth_provider.db.delete(self.format_key(self.__dict__))
-
-
 
 
 class Token(MetaModel):
@@ -92,7 +88,7 @@ class Token(MetaModel):
 
     @property
     def expires(self):
-        return datetime.strptime(self._expires, "%Y-%m-%dT%H:%M:%S.%f" )
+        return datetime.strptime(self._expires, "%Y-%m-%dT%H:%M:%S.%f")
 
     @property
     def scopes(self):
@@ -151,8 +147,6 @@ def save_grant(client_id, code, request, *args, **kwargs):
 def load_token(access_token=None, refresh_token=None):
     if access_token:
         return Token.get_from_db(access_token=access_token)
-
-
 
 
 @oauth.tokensetter
