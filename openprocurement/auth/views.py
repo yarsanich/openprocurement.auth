@@ -13,16 +13,19 @@ def access_token():
 @oauth_provider.route('/oauth/authorize', methods=['GET', 'POST'])
 @oauth.authorize_handler
 def authorize(*args, **kwargs):
+    auto_allow = 'no'
     user = current_user()
     if not user:
         return redirect('/')
-    if request.method == 'GET':
+    if request.method == 'GET' and 'auto_allow' not in request.args:
         kwargs['client'] = Client.get_from_db(client_id=kwargs.get('client_id', ''))
         kwargs['user'] = user
         kwargs['redirect_uri'] = request.args['redirect_uri']
         return render_template('authorize.html', **kwargs)
+    elif 'auto_allow' in request.args:
+        auto_allow = 'yes'
 
-    confirm = request.form.get('confirm', 'no')
+    confirm = request.form.get('confirm', auto_allow)
     return confirm == 'yes'
 
 
