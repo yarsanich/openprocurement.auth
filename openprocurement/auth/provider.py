@@ -18,7 +18,7 @@ def make_oath_provider_app(
     oauth_provider.db = Redis.from_url(redis)
     oauth_provider.secret_key = secret
     oauth_provider.hash_secret_key = hash_secret_key
-
+    oauth_provider.config['OAUTH2_PROVIDER_TOKEN_EXPIRES_IN'] = openprocurement.auth.models.GRANT_EXPIRES
     if not openprocurement.auth.models.Client.get_from_db(client_id=auction_client_id):
         client = openprocurement.auth.models.Client(
             client_id=auction_client_id,

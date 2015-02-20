@@ -1,7 +1,6 @@
 from openprocurement.auth.provider_app import oauth_provider, oauth
-from openprocurement.auth.models import User, Client, current_user
-from flask import request, session, redirect, jsonify, render_template
-from werkzeug.security import gen_salt
+from openprocurement.auth.models import Client, current_user
+from flask import request, redirect, jsonify, render_template
 
 
 @oauth_provider.route('/oauth/token')
@@ -32,5 +31,7 @@ def authorize(*args, **kwargs):
 @oauth_provider.route('/api/me')
 @oauth.require_oauth()
 def allow_bid():
-    user = request.oauth.user
-    return jsonify(bidder_id=user)
+    return jsonify(
+        bidder_id=request.oauth.user,
+        expires=request.oauth.access_token._expires
+    )

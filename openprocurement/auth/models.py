@@ -3,7 +3,6 @@ from .provider_app import oauth, oauth_provider
 from flask import request, abort
 from flask import current_app
 from hashlib import sha1
-from uuid import uuid4
 import re
 
 GRANT_EXPIRES = 86400
@@ -20,7 +19,7 @@ class MetaModel(object):
         return cls.__name__.lower() + cls.format_key_string.format(kw)
 
     @classmethod
-    def set_expire(cls, model, timeout=3600):
+    def set_expire(cls, model, timeout=GRANT_EXPIRES):
         oauth_provider.db.expire(cls.format_key(model.__dict__), timeout)
 
     @classmethod
@@ -151,8 +150,7 @@ def load_token(access_token=None, refresh_token=None):
 
 @oauth.tokensetter
 def save_token(token, request, *args, **kwargs):
-    expires_in = token.pop('expires_in')
-    expires = datetime.utcnow() + timedelta(seconds=expires_in)
+    expires = datetime.utcnow() + timedelta(seconds=GRANT_EXPIRES)
     tok = Token(
         access_token=token['access_token'],
         refresh_token=token['refresh_token'],
