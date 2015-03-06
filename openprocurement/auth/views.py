@@ -12,7 +12,7 @@ def access_token():
 @oauth_provider.route('/oauth/authorize', methods=['GET', 'POST'])
 @oauth.authorize_handler
 def authorize(*args, **kwargs):
-    auto_allow = 'no'
+
     user = current_user()
     if not user:
         return redirect('/')
@@ -22,10 +22,12 @@ def authorize(*args, **kwargs):
         kwargs['redirect_uri'] = request.args['redirect_uri']
         return render_template('authorize.html', **kwargs)
     elif 'auto_allow' in request.args:
-        auto_allow = 'yes'
+        return True
 
-    confirm = request.form.get('confirm', auto_allow)
-    return confirm == 'yes'
+    if 'confirm' in request.form:
+        return True
+
+    return False
 
 
 @oauth_provider.route('/api/me')
