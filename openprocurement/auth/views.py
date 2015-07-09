@@ -3,7 +3,7 @@ from openprocurement.auth.models import Client, current_user
 from flask import request, redirect, jsonify, render_template
 
 
-@oauth_provider.route('/oauth/token')
+@oauth_provider.route('/oauth/token', methods=['GET', 'POST'])
 @oauth.token_handler
 def access_token():
     return None
