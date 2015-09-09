@@ -26,7 +26,7 @@ def make_oath_provider_app(
             _redirect_uris=' '.join(
                 ['http:\/\/localhost:.*',
                  '(http|https):\/\/[\w\-_]+\.office\.quintagroup\.com.*',
-                 '(http|https):\/\/[\w\-_]+\.openprocurement\.org\.*']
+                 '(http|https):\/\/[.\w\-_]+\.openprocurement\.org\.*']
             ),
             _default_scopes='email'
         )
