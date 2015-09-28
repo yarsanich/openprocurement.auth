@@ -117,7 +117,8 @@ def current_user():
 
 @oauth.clientgetter
 def load_client(client_id):
-    return Client.get_from_db(client_id=client_id)
+    if oauth_provider.auction_client.client_id == client_id:
+        return oauth_provider.auction_client
 
 
 @oauth.grantgetter

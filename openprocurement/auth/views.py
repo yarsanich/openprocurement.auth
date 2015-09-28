@@ -1,5 +1,5 @@
 from openprocurement.auth.provider_app import oauth_provider, oauth
-from openprocurement.auth.models import Client, current_user
+from openprocurement.auth.models import current_user
 from flask import request, redirect, jsonify, render_template
 
 
@@ -17,10 +17,14 @@ def authorize(*args, **kwargs):
     if not user:
         return redirect('/')
     if request.method == 'GET' and 'auto_allow' not in request.args:
-        kwargs['client'] = Client.get_from_db(client_id=kwargs.get('client_id', ''))
+        kwargs['client'] = oauth_provider.auction_client
         kwargs['user'] = user
         kwargs['redirect_uri'] = request.args['redirect_uri']
-        return render_template('authorize.html', **kwargs)
+        response = render_template('authorize.html', **kwargs)
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '-1'
+        return response
     elif 'auto_allow' in request.args:
         return True
 

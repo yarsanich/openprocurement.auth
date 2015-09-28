@@ -19,16 +19,16 @@ def make_oath_provider_app(
     oauth_provider.secret_key = secret
     oauth_provider.hash_secret_key = hash_secret_key
     oauth_provider.config['OAUTH2_PROVIDER_TOKEN_EXPIRES_IN'] = openprocurement.auth.models.GRANT_EXPIRES
-    if not openprocurement.auth.models.Client.get_from_db(client_id=auction_client_id):
-        client = openprocurement.auth.models.Client(
-            client_id=auction_client_id,
-            client_secret=auction_client_secret,
-            _redirect_uris=' '.join(
-                ['http:\/\/localhost:.*',
-                 '(http|https):\/\/[\w\-_]+\.office\.quintagroup\.com.*',
-                 '(http|https):\/\/[.\w\-_]+\.openprocurement\.org\.*']
-            ),
-            _default_scopes='email'
-        )
-        openprocurement.auth.models.Client.save_to_db(client)
+
+    oauth_provider.auction_client = openprocurement.auth.models.Client(
+        client_id=auction_client_id,
+        client_secret=auction_client_secret,
+        _redirect_uris=' '.join(
+            ['http:\/\/localhost:.*',
+             '(http|https):\/\/[\w\-_]+\.office\.quintagroup\.com.*',
+             '(http|https):\/\/[.\w\-_]+\.openprocurement\.org\.*']
+        ),
+        _default_scopes='email'
+    )
+
     return oauth_provider
