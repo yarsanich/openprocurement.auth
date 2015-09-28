@@ -81,6 +81,9 @@ class Grant(MetaModel):
     def delete(self):
         return oauth_provider.db.delete(self.format_key(self.__dict__))
 
+    def validate_redirect_uri(self, redirect_uri):
+        return True
+
 
 class Token(MetaModel):
     format_key_string = "_{0[access_token]}"
