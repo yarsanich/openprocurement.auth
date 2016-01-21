@@ -11,6 +11,7 @@ from .systemd_msgs_ids import(
 
 logger = getLogger(__name__)
 
+
 @oauth_provider.route('/oauth/token', methods=['GET', 'POST'])
 @oauth.token_handler
 def access_token():
@@ -38,8 +39,10 @@ def authorize(*args, **kwargs):
         return True
 
     if 'confirm' in request.form:
-        logger.info('Authorize form {}'.format(repr(request.form)), extra={'MESSAGE_ID': AUTH_CONFIRM_FORM,
-                                                                           'BIDDER_ID': repr(user.bidder_id)})
+        logger.info(
+            'Authorize form {}'.format(repr(request.form['confirm'])),
+            extra={'MESSAGE_ID': AUTH_CONFIRM_FORM,
+                   'BIDDER_ID': repr(user.bidder_id)})
         return True
 
     logger.info('Not confirm authorize form', extra={'MESSAGE_ID': AUTH_NOT_CONFIRM_FORM})
@@ -49,7 +52,13 @@ def authorize(*args, **kwargs):
 @oauth_provider.route('/api/me')
 @oauth.require_oauth()
 def allow_bid():
-    logger.info('Bid allow', extra={'MESSAGE_ID': AUTH_BID_ALLOW, 'BIDDER_ID':repr(request.oauth.user)})
+    logger.info(
+        'Checked bidder',
+        extra={
+            'MESSAGE_ID': AUTH_BID_ALLOW,
+            'BIDDER_ID': repr(request.oauth.user)
+        }
+    )
     return jsonify(
         bidder_id=request.oauth.user,
         expires=request.oauth.access_token._expires
