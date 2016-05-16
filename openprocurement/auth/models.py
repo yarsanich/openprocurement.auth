@@ -7,12 +7,23 @@ import re
 
 GRANT_EXPIRES = 86400
 
+def get_database(master=True):
+    if hasattr(oauth_provider, 'sentinal'):
+        if master:
+            return oauth_provider.sentinal.master_for(oauth_provider.sentinel_cluster_name)
+        else:
+            return oauth_provider.sentinal.slave_for(oauth_provider.sentinel_cluster_name)
+    else:
+        return oauth_provider.db
+
 
 class MetaModel(object):
     format_key_string = "{0['id']}"
 
     def __init__(self, **entries):
         self.__dict__.update(entries)
+    @classmethod
+    def get
 
     @classmethod
     def format_key(cls, kw):
@@ -20,11 +31,13 @@ class MetaModel(object):
 
     @classmethod
     def set_expire(cls, model, timeout=GRANT_EXPIRES):
-        oauth_provider.db.expire(cls.format_key(model.__dict__), timeout)
+        db = get_database()
+        db.expire(cls.format_key(model.__dict__), timeout)
 
     @classmethod
     def get_from_db(cls, **kw):
-        document = oauth_provider.db.hgetall(cls.format_key(kw))
+        db = get_database()
+        document = db.hgetall(cls.format_key(kw))
         if document:
             client = cls(**document)
             client.__dict__.update(kw)
@@ -32,7 +45,8 @@ class MetaModel(object):
 
     @classmethod
     def save_to_db(cls, model):
-        return oauth_provider.db.hmset(
+        db = get_database()
+        return db.hmset(
             cls.format_key(model.__dict__),
             model.__dict__
         )
@@ -79,7 +93,8 @@ class Grant(MetaModel):
         return datetime.strptime(self._expires, "%Y-%m-%dT%H:%M:%S.%f")
 
     def delete(self):
-        return oauth_provider.db.delete(self.format_key(self.__dict__))
+        db = get_database()
+        return db.delete(self.format_key(self.__dict__))
 
     def validate_redirect_uri(self, redirect_uri):
         return True
