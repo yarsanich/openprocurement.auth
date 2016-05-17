@@ -22,8 +22,6 @@ class MetaModel(object):
 
     def __init__(self, **entries):
         self.__dict__.update(entries)
-    @classmethod
-    def get
 
     @classmethod
     def format_key(cls, kw):
@@ -36,7 +34,7 @@ class MetaModel(object):
 
     @classmethod
     def get_from_db(cls, **kw):
-        db = get_database()
+        db = get_database() # get_database(False)
         document = db.hgetall(cls.format_key(kw))
         if document:
             client = cls(**document)
