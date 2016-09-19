@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '2.0.0_auction_main_sharding'
+version = '2.0.0.dev1+auction.worker.sharding'
 
 setup(name='openprocurement.auth',
       version=version,
