@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '2.0.0.dev1+auction.worker.sharding'
+version = '2.0.0.dev2+auction.worker.sharding'
 
 setup(name='openprocurement.auth',
       version=version,
@@ -29,7 +29,7 @@ setup(name='openprocurement.auth',
           'Flask-SQLAlchemy',
           'werkzeug',
           'Flask-OAuthlib',
-          'retring'
+          'retrying'
       ],
       entry_points={
           'paste.app_factory': [
