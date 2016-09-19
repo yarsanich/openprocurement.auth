@@ -4,6 +4,7 @@ from flask import request, abort
 from flask import current_app
 from hashlib import sha1
 import re
+from retrying import retry
 
 GRANT_EXPIRES = 86400
 
@@ -24,17 +25,20 @@ class MetaModel(object):
         self.__dict__.update(entries)
 
     @classmethod
+    @retry(stop_max_attempt_number=3)
     def format_key(cls, kw):
         return cls.__name__.lower() + cls.format_key_string.format(kw)
 
     @classmethod
+    @retry(stop_max_attempt_number=3)
     def set_expire(cls, model, timeout=GRANT_EXPIRES):
         db = get_database()
         db.expire(cls.format_key(model.__dict__), timeout)
 
     @classmethod
+    @retry(stop_max_attempt_number=3)
     def get_from_db(cls, **kw):
-        db = get_database() # get_database(False)
+        db = get_database()
         document = db.hgetall(cls.format_key(kw))
         if document:
             client = cls(**document)
@@ -42,6 +46,7 @@ class MetaModel(object):
             return client
 
     @classmethod
+    @retry(stop_max_attempt_number=3)
     def save_to_db(cls, model):
         db = get_database()
         return db.hmset(

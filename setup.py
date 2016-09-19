@@ -28,7 +28,8 @@ setup(name='openprocurement.auth',
           'Flask',
           'Flask-SQLAlchemy',
           'werkzeug',
-          'Flask-OAuthlib'
+          'Flask-OAuthlib',
+          'retring'
       ],
       entry_points={
           'paste.app_factory': [
