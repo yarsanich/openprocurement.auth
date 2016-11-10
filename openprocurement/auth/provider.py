@@ -36,7 +36,7 @@ def make_oath_provider_app(
          '(http|https):\/\/[\w\-_]+\.office\.quintagroup\.com.*',
          '(http|https):\/\/[.\w\-_]+\.openprocurement\.org\.*']
     if auction_url:
-        default_allowed.append(auction_url + '*')
+        default_allowed.append(auction_url.replace('.', '\.').replace('/', '\/') + '.*')
     oauth_provider.auction_client = openprocurement.auth.models.Client(
         client_id=auction_client_id,
         client_secret=auction_client_secret,
