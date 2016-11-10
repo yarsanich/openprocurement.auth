@@ -18,6 +18,7 @@ def make_oath_provider_app(
         secret='abcdfg',
         timezone='Europe/Kiev',
         hash_secret_key='',
+        auction_url="",
         auction_client_id='',
         auction_client_secret=''):
 
@@ -30,15 +31,16 @@ def make_oath_provider_app(
     oauth_provider.secret_key = secret
     oauth_provider.hash_secret_key = hash_secret_key
     oauth_provider.config['OAUTH2_PROVIDER_TOKEN_EXPIRES_IN'] = openprocurement.auth.models.GRANT_EXPIRES
-
+    default_allowed = \
+        ['http:\/\/localhost:.*',
+         '(http|https):\/\/[\w\-_]+\.office\.quintagroup\.com.*',
+         '(http|https):\/\/[.\w\-_]+\.openprocurement\.org\.*']
+    if auction_url:
+        default_allowed.append(auction_url + '*')
     oauth_provider.auction_client = openprocurement.auth.models.Client(
         client_id=auction_client_id,
         client_secret=auction_client_secret,
-        _redirect_uris=' '.join(
-            ['http:\/\/localhost:.*',
-             '(http|https):\/\/[\w\-_]+\.office\.quintagroup\.com.*',
-             '(http|https):\/\/[.\w\-_]+\.openprocurement\.org\.*']
-        ),
+        _redirect_uris=' '.join(default_allowed),
         _default_scopes='email'
     )
 
