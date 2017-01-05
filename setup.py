@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '2.0.0.dev1+mepps'
+version = '2.0.0.dev2+mepps'
 
 setup(name='openprocurement.auth',
       version=version,
