@@ -29,7 +29,8 @@ setup(name='openprocurement.auth',
           'Flask-SQLAlchemy',
           'werkzeug',
           'Flask-OAuthlib',
-          'retrying'
+          'retrying',
+          'libnacl'
       ],
       entry_points={
           'paste.app_factory': [

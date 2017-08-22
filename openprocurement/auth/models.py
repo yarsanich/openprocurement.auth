@@ -5,6 +5,8 @@ from flask import current_app
 from hashlib import sha1
 import re
 from retrying import retry
+from base64 import b64decode
+from libnacl.sign import Signer, Verifier
 
 GRANT_EXPIRES = 86400
 
@@ -128,6 +130,25 @@ def current_user():
                 user = User(**{'bidder_id': bidder_id})
                 User.save_to_db(user)
                 User.set_expire(user)
+            return user
+    elif 'bidder_id' in request.form:
+        user = User.get_from_db(bidder_id=request.form['bidder_id'])
+        if user:
+            return user
+    return abort(405)
+
+
+
+def current_user_sig():
+    if 'bidder_id' in request.args and 'signature' in request.args:
+        signature = b64decode(request.args['signature'])
+        bidder_id = request.args['bidder_id']
+        signer = Signer(current_app.signature_key.decode('hex'))
+        verifier = Verifier(signer.hex_vk())
+        if verifier.verify(signature+str(bidder_id)):
+            user = User(**{'bidder_id': bidder_id})
+            User.save_to_db(user)
+            User.set_expire(user)
             return user
     elif 'bidder_id' in request.form:
         user = User.get_from_db(bidder_id=request.form['bidder_id'])

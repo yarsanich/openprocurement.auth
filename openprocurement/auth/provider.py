@@ -18,6 +18,7 @@ def make_oath_provider_app(
         secret='abcdfg',
         timezone='Europe/Kiev',
         hash_secret_key='',
+        signature_oauth_key='',
         auction_url="",
         auction_client_id='',
         auction_client_secret=''):
@@ -30,6 +31,7 @@ def make_oath_provider_app(
         oauth_provider.db = Redis.from_url(redis)
     oauth_provider.secret_key = secret
     oauth_provider.hash_secret_key = hash_secret_key
+    oauth_provider.signature_key = signature_oauth_key
     oauth_provider.config['OAUTH2_PROVIDER_TOKEN_EXPIRES_IN'] = openprocurement.auth.models.GRANT_EXPIRES
     default_allowed = \
         ['http:\/\/localhost:.*',
