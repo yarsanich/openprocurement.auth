@@ -7,6 +7,7 @@ import re
 from retrying import retry
 from base64 import b64decode
 from libnacl.sign import Signer, Verifier
+from urllib import unquote
 
 GRANT_EXPIRES = 86400
 
@@ -141,7 +142,7 @@ def current_user():
 
 def current_user_sig():
     if 'bidder_id' in request.args and 'signature' in request.args:
-        signature = b64decode(request.args['signature'])
+        signature = b64decode(unquote(request.args['signature']))
         bidder_id = request.args['bidder_id']
         signer = Signer(current_app.signature_key.decode('hex'))
         verifier = Verifier(signer.hex_vk())
